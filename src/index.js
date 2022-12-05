@@ -48,7 +48,12 @@ searchForm.addEventListener("submit", search);
 
 function showTemperature(response) {
   let temperature = Math.round(response.data.main.temp);
-  console.log(temperature);
   let temperatureElement = document.querySelector("#temperature");
+  let descriptionElement = document.querySelector("#weather-type");
+  let humidityElement = document.querySelector("#humidity");
+  let windElement = document.querySelector("#wind");
+  descriptionElement.innerHTML = response.data.weather[0].description;
   temperatureElement.innerHTML = `${temperature}`;
+  humidityElement.innerHTML = response.data.main.humidity;
+  windElement.innerHTML = Math.round(response.data.wind.speed);
 }
