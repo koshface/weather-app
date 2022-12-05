@@ -47,7 +47,6 @@ searchForm.addEventListener("submit", search);
 //
 
 function showTemperature(response) {
-  let temperature = Math.round(response.data.main.temp);
   let temperatureElement = document.querySelector("#temperature");
   let descriptionElement = document.querySelector("#weather-type");
   let humidityElement = document.querySelector("#humidity");
