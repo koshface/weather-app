@@ -28,7 +28,6 @@ let currentTime = new Date();
 dateElement.innerHTML = formatDate(currentTime);
 
 //change city
-
 function search(event) {
   event.preventDefault();
   let cityElement = document.querySelector("#city");
@@ -41,11 +40,18 @@ function search(event) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
   axios.get(apiUrl).then(showTemperature);
 }
-
 //change temp
+function getForecast(coordinates) {
+  console.log(coordinates);
+  let apiKey = "97f8e93f00107773f88eafd933ce86b7";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&unites=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
 
 function showTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
+
   let descriptionElement = document.querySelector("#weather-type");
   let humidityElement = document.querySelector("#humidity");
   let windElement = document.querySelector("#wind");
@@ -53,8 +59,9 @@ function showTemperature(response) {
 
   celsiusTemperature = response.data.main.temp;
 
-  descriptionElement.innerHTML = response.data.weather[0].description;
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
+
+  descriptionElement.innerHTML = response.data.weather[0].description;
   humidityElement.innerHTML = response.data.main.humidity;
   windElement.innerHTML = Math.round(response.data.wind.speed);
   iconElement.setAttribute(
@@ -62,7 +69,9 @@ function showTemperature(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
+  getForecast(response.data.coord);
 }
+
 //units
 function displayFahrenheitTemperature(event) {
   event.preventDefault();
@@ -78,7 +87,8 @@ function displayCelsiusTemperature(event) {
 }
 
 //forecast
-function displayForecast() {
+function displayForecast(response) {
+  console.log(response.data.daily);
   let forecastElement = document.querySelector("#forecast");
 
   let days = ["Thu", "Fri", "Sat", "Sun", "Sat"];
@@ -119,5 +129,3 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
-
-displayForecast();
